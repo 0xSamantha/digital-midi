@@ -1,0 +1,13 @@
+---
+description: Write publication-ready, client-facing README documentation.
+globs: "**/README*"
+alwaysApply: false
+---
+
+# Client-facing READMEs
+
+Write READMEs for clients and end users reading the published project.
+Explain the product, requirements, installation, usage, and relevant limitations.
+Do not address the developer personally or narrate the development conversation.
+Do not mention supplied ZIP files, local source archive paths, prompts, or handoff history.
+Keep required licensing and third-party attribution where applicable, without exposing handoff details.
