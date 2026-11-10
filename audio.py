@@ -1,6 +1,7 @@
 """Small polyphonic preview synth; the DAW supplies production instruments."""
 import threading
 import numpy as np
+from visualizer import ScopeBuffer
 
 
 class Synth:
@@ -9,8 +10,10 @@ class Synth:
     def __init__(self):
         self.voices = {}
         self.lock = threading.Lock()
-        self.volume = .18
+        self.volume = .12
         self.rng = np.random.default_rng()
+        self.scope = ScopeBuffer()
+        self.underflows = 0
 
     def send(self, kind, channel, note, velocity):
         with self.lock:
@@ -22,6 +25,8 @@ class Synth:
                 self.voices = {k: v for k, v in self.voices.items() if k[0] != channel}
 
     def callback(self, outdata, frames, timing, status):
+        if status and getattr(status, 'output_underflow', False):
+            self.underflows += 1
         mixed = np.zeros(frames)
         with self.lock:
             for (channel, note), voice in list(self.voices.items()):
@@ -59,3 +64,4 @@ class Synth:
                     mixed += signal * envelope * velocity
                 voice[0] += frames
         outdata[:, 0] = np.tanh(mixed * self.volume).astype('float32')
+        self.scope.write(outdata[:, 0])

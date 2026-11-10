@@ -60,8 +60,8 @@ class GestureTests(unittest.TestCase):
 class GeometryTests(unittest.TestCase):
     def test_black_keys_and_bounds(self):
         layout = zones()
-        self.assertEqual(hit(layout, 110, 560).note, 61)
-        self.assertEqual(hit(layout, 100, 710).note, 60)
+        self.assertEqual(hit(layout, 110, 610).note, 61)
+        self.assertEqual(hit(layout, 100, 750).note, 60)
         self.assertIsNone(hit(layout, 0, 0))
         self.assertEqual(len([z for z in layout if z.channel == 0]), 25)
         self.assertEqual(len([z for z in layout if z.channel == 9]), 16)
